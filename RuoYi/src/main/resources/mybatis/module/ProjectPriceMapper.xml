@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.module.projectPrice.mapper.ProjectPriceMapper">
+    
+    <resultMap type="ProjectPrice" id="ProjectPriceResult">
+        <result property="ppId"    column="pp_id"    />
+        <result property="ppProjectName"    column="pp_project_name"    />
+        <result property="ppNo"    column="pp_no"    />
+        <result property="ppNoX"    column="pp_no_x"    />
+        <result property="ppNature"    column="pp_nature"    />
+        <result property="ppPriceType"    column="pp_price_type"    />
+        <result property="ppPriceClass"    column="pp_price_class"    />
+        <result property="ppPrice"    column="pp_price"    />
+        <result property="ppUsePrice"    column="pp_use_price"    />
+        <result property="ppSurplusPrice"    column="pp_surplus_price"    />
+        <result property="ppProvinceId"    column="pp_province_id"    />
+        <result property="ppCityId"    column="pp_city_id"    />
+        <result property="ppZoneId"    column="pp_zone_id"    />
+        <result property="ppPurpose"    column="pp_purpose"    />
+        <result property="ppPriceState"    column="pp_price_state"    />
+        <result property="ppInPlaceTime"    column="pp_in_place_time"    />
+        <result property="ppUseTime"    column="pp_use_time"    />
+        <result property="ppIsUse"    column="pp_is_use"    />
+        <result property="ppIsDel"    column="pp_is_del"    />
+        <result property="ppPerson"    column="pp_person"    />
+        <result property="ppCreateTime"    column="pp_create_time"    />
+    </resultMap>
+	
+	<sql id="selectProjectPriceVo">
+        select pp_id, pp_project_name, pp_no, pp_no_x, pp_nature, pp_price_type, pp_price_class, pp_price, pp_use_price, pp_surplus_price, pp_province_id, pp_city_id, pp_zone_id, pp_purpose, pp_price_state, pp_in_place_time, pp_use_time, pp_is_use, pp_is_del, pp_person, pp_create_time from fm_project_price
+    </sql>
+	
+    <select id="selectProjectPriceList" parameterType="ProjectPrice" resultMap="ProjectPriceResult">
+        <include refid="selectProjectPriceVo"/>
+        <where>  
+            <if test="ppId != null  and ppId != '' "> and pp_id = #{ppId}</if>
+             <if test="ppProjectName != null  and ppProjectName != '' "> and pp_project_name = #{ppProjectName}</if>
+             <if test="ppNo != null  and ppNo != '' "> and pp_no = #{ppNo}</if>
+             <if test="ppNoX != null  and ppNoX != '' "> and pp_no_x = #{ppNoX}</if>
+             <if test="ppNature != null  and ppNature != '' "> and pp_nature = #{ppNature}</if>
+             <if test="ppPriceType != null  and ppPriceType != '' "> and pp_price_type = #{ppPriceType}</if>
+             <if test="ppPriceClass != null  and ppPriceClass != '' "> and pp_price_class = #{ppPriceClass}</if>
+             <if test="ppPrice != null "> and pp_price = #{ppPrice}</if>
+             <if test="ppUsePrice != null "> and pp_use_price = #{ppUsePrice}</if>
+             <if test="ppSurplusPrice != null "> and pp_surplus_price = #{ppSurplusPrice}</if>
+             <if test="ppProvinceId != null  and ppProvinceId != '' "> and pp_province_id = #{ppProvinceId}</if>
+             <if test="ppCityId != null  and ppCityId != '' "> and pp_city_id = #{ppCityId}</if>
+             <if test="ppZoneId != null  and ppZoneId != '' "> and pp_zone_id = #{ppZoneId}</if>
+             <if test="ppPurpose != null  and ppPurpose != '' "> and pp_purpose = #{ppPurpose}</if>
+             <if test="ppPriceState != null  and ppPriceState != '' "> and pp_price_state = #{ppPriceState}</if>
+             <if test="ppInPlaceTime != null "> and pp_in_place_time = #{ppInPlaceTime}</if>
+             <if test="ppUseTime != null "> and pp_use_time = #{ppUseTime}</if>
+             <if test="ppIsUse != null "> and pp_is_use = #{ppIsUse}</if>
+             <if test="ppIsDel != null "> and pp_is_del = #{ppIsDel}</if>
+             <if test="ppPerson != null  and ppPerson != '' "> and pp_person = #{ppPerson}</if>
+             <if test="ppCreateTime != null "> and pp_create_time = #{ppCreateTime}</if>
+         </where>
+    </select>
+    
+    <select id="selectProjectPriceById" parameterType="String" resultMap="ProjectPriceResult">
+        <include refid="selectProjectPriceVo"/>
+        where pp_id = #{ppId}
+    </select>
+        
+    <insert id="insertProjectPrice" parameterType="ProjectPrice">
+        insert into fm_project_price
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="ppId != null  and ppId != ''  ">pp_id,</if>
+			<if test="ppProjectName != null  and ppProjectName != ''  ">pp_project_name,</if>
+			<if test="ppNo != null  and ppNo != ''  ">pp_no,</if>
+			<if test="ppNoX != null  and ppNoX != ''  ">pp_no_x,</if>
+			<if test="ppNature != null  and ppNature != ''  ">pp_nature,</if>
+			<if test="ppPriceType != null  and ppPriceType != ''  ">pp_price_type,</if>
+			<if test="ppPriceClass != null  and ppPriceClass != ''  ">pp_price_class,</if>
+			<if test="ppPrice != null  ">pp_price,</if>
+			<if test="ppUsePrice != null  ">pp_use_price,</if>
+			<if test="ppSurplusPrice != null  ">pp_surplus_price,</if>
+			<if test="ppProvinceId != null  and ppProvinceId != ''  ">pp_province_id,</if>
+			<if test="ppCityId != null  and ppCityId != ''  ">pp_city_id,</if>
+			<if test="ppZoneId != null  and ppZoneId != ''  ">pp_zone_id,</if>
+			<if test="ppPurpose != null  and ppPurpose != ''  ">pp_purpose,</if>
+			<if test="ppPriceState != null  and ppPriceState != ''  ">pp_price_state,</if>
+			<if test="ppInPlaceTime != null  ">pp_in_place_time,</if>
+			<if test="ppUseTime != null  ">pp_use_time,</if>
+			<if test="ppIsUse != null  ">pp_is_use,</if>
+			<if test="ppIsDel != null  ">pp_is_del,</if>
+			<if test="ppPerson != null  and ppPerson != ''  ">pp_person,</if>
+			<if test="ppCreateTime != null  ">pp_create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="ppId != null  and ppId != ''  ">#{ppId},</if>
+			<if test="ppProjectName != null  and ppProjectName != ''  ">#{ppProjectName},</if>
+			<if test="ppNo != null  and ppNo != ''  ">#{ppNo},</if>
+			<if test="ppNoX != null  and ppNoX != ''  ">#{ppNoX},</if>
+			<if test="ppNature != null  and ppNature != ''  ">#{ppNature},</if>
+			<if test="ppPriceType != null  and ppPriceType != ''  ">#{ppPriceType},</if>
+			<if test="ppPriceClass != null  and ppPriceClass != ''  ">#{ppPriceClass},</if>
+			<if test="ppPrice != null  ">#{ppPrice},</if>
+			<if test="ppUsePrice != null  ">#{ppUsePrice},</if>
+			<if test="ppSurplusPrice != null  ">#{ppSurplusPrice},</if>
+			<if test="ppProvinceId != null  and ppProvinceId != ''  ">#{ppProvinceId},</if>
+			<if test="ppCityId != null  and ppCityId != ''  ">#{ppCityId},</if>
+			<if test="ppZoneId != null  and ppZoneId != ''  ">#{ppZoneId},</if>
+			<if test="ppPurpose != null  and ppPurpose != ''  ">#{ppPurpose},</if>
+			<if test="ppPriceState != null  and ppPriceState != ''  ">#{ppPriceState},</if>
+			<if test="ppInPlaceTime != null  ">#{ppInPlaceTime},</if>
+			<if test="ppUseTime != null  ">#{ppUseTime},</if>
+			<if test="ppIsUse != null  ">#{ppIsUse},</if>
+			<if test="ppIsDel != null  ">#{ppIsDel},</if>
+			<if test="ppPerson != null  and ppPerson != ''  ">#{ppPerson},</if>
+			<if test="ppCreateTime != null  ">#{ppCreateTime},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateProjectPrice" parameterType="ProjectPrice">
+        update fm_project_price
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="ppProjectName != null  and ppProjectName != ''  ">pp_project_name = #{ppProjectName},</if>
+            <if test="ppNo != null  and ppNo != ''  ">pp_no = #{ppNo},</if>
+            <if test="ppNoX != null  and ppNoX != ''  ">pp_no_x = #{ppNoX},</if>
+            <if test="ppNature != null  and ppNature != ''  ">pp_nature = #{ppNature},</if>
+            <if test="ppPriceType != null  and ppPriceType != ''  ">pp_price_type = #{ppPriceType},</if>
+            <if test="ppPriceClass != null  and ppPriceClass != ''  ">pp_price_class = #{ppPriceClass},</if>
+            <if test="ppPrice != null  ">pp_price = #{ppPrice},</if>
+            <if test="ppUsePrice != null  ">pp_use_price = #{ppUsePrice},</if>
+            <if test="ppSurplusPrice != null  ">pp_surplus_price = #{ppSurplusPrice},</if>
+            <if test="ppProvinceId != null  and ppProvinceId != ''  ">pp_province_id = #{ppProvinceId},</if>
+            <if test="ppCityId != null  and ppCityId != ''  ">pp_city_id = #{ppCityId},</if>
+            <if test="ppZoneId != null  and ppZoneId != ''  ">pp_zone_id = #{ppZoneId},</if>
+            <if test="ppPurpose != null  and ppPurpose != ''  ">pp_purpose = #{ppPurpose},</if>
+            <if test="ppPriceState != null  and ppPriceState != ''  ">pp_price_state = #{ppPriceState},</if>
+            <if test="ppInPlaceTime != null  ">pp_in_place_time = #{ppInPlaceTime},</if>
+            <if test="ppUseTime != null  ">pp_use_time = #{ppUseTime},</if>
+            <if test="ppIsUse != null  ">pp_is_use = #{ppIsUse},</if>
+            <if test="ppIsDel != null  ">pp_is_del = #{ppIsDel},</if>
+            <if test="ppPerson != null  and ppPerson != ''  ">pp_person = #{ppPerson},</if>
+            <if test="ppCreateTime != null  ">pp_create_time = #{ppCreateTime},</if>
+        </trim>
+        where pp_id = #{ppId}
+    </update>
+
+	<delete id="deleteProjectPriceById" parameterType="String">
+        delete from fm_project_price where pp_id = #{ppId}
+    </delete>
+	
+    <delete id="deleteProjectPriceByIds" parameterType="String">
+        delete from fm_project_price where pp_id in 
+        <foreach item="ppId" collection="array" open="(" separator="," close=")">
+            #{ppId}
+        </foreach>
+    </delete>
+    
+</mapper>

@@ -1,0 +1,268 @@
+<!DOCTYPE HTML>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+    
+     <div class="container-div">
+		<div class="row">
+			<div class="col-sm-12 search-collapse">
+				<form id="formId">
+					<div class="select-list">
+						<ul>
+							<li>
+								*资金名称：<input type="text" name="ppProjectName"/>
+							</li>
+
+							<li>
+								*资金文号(省)：<input type="text" name="ppNo"/>
+							</li>
+
+							<li>
+								*资金文号(县)：<input type="text" name="ppNoX"/>
+							</li>
+
+							<li>
+								*资金性质：<input type="text" name="ppNature"/>
+							</li>
+
+							<li>
+								*资金类别：<input type="text" name="ppPriceType"/>
+							</li>
+
+							<li>
+								*资金级别：<input type="text" name="ppPriceClass"/>
+							</li>
+
+							<li>
+								*资金金额(万元)：<input type="text" name="ppPrice"/>
+							</li>
+
+							<li>
+								已挂接(万元)-实际到了实施单位的金额：<input type="text" name="ppUsePrice"/>
+							</li>
+
+							<li>
+								剩余(万元)：<input type="text" name="ppSurplusPrice"/>
+							</li>
+
+							<li>
+								行政区划(省)：<input type="text" name="ppProvinceId"/>
+							</li>
+
+							<li>
+								行政区划(市)：<input type="text" name="ppCityId"/>
+							</li>
+
+							<li>
+								行政区划(区)：<input type="text" name="ppZoneId"/>
+							</li>
+
+							<li>
+								资金用途：<input type="text" name="ppPurpose"/>
+							</li>
+
+							<li>
+								资金状态(1、待拨付2、拨付中3、拨付完)：<input type="text" name="ppPriceState"/>
+							</li>
+
+							<li>
+								到位时间：<input type="text" name="ppInPlaceTime"/>
+							</li>
+
+							<li>
+								限定使用时间：<input type="text" name="ppUseTime"/>
+							</li>
+
+							<li>
+								是否可用(1、否0、是)：<input type="text" name="ppIsUse"/>
+							</li>
+
+							<li>
+								是否删除(1 可用   -100已删除)：<input type="text" name="ppIsDel"/>
+							</li>
+
+							<li>
+								录入人：<input type="text" name="ppPerson"/>
+							</li>
+
+							<li>
+								创建时间：<input type="text" name="ppCreateTime"/>
+							</li>
+
+							<li>
+								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+								<a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+							</li>
+						</ul>
+					</div>
+				</form>
+			</div>
+			
+	        <div class="btn-group-sm hidden-xs" id="toolbar" role="group">
+				<a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:projectPrice:add">
+					<i class="fa fa-plus"></i> 添加
+				</a>
+				<a class="btn btn-primary btn-edit disabled" onclick="$.operate.edit()" shiro:hasPermission="system:projectPrice:edit">
+					<i class="fa fa-edit"></i> 修改
+				</a>
+				<a class="btn btn-danger btn-del btn-del disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:projectPrice:remove">
+					<i class="fa fa-remove"></i> 删除
+				</a>
+				<a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:projectPrice:export">
+						<i class="fa fa-download"></i> 导出
+				 </a>
+			</div>
+			<div class="col-sm-12 select-table table-striped">
+				<table i d="bootstrap-table" data-mobile-responsive="true"  data-show-footer"true"></table>
+			</div>
+		 </div>
+	</div>
+    <div th:include="include :: footer"></div>
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('system:projectPrice:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('system:projectPrice:remove')}]];
+        var prefix = ctx + "system/projectPrice";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+				exportUrl: prefix + "/export",
+                modalName: "项目资金",
+				search: false,
+		        showExport: true,
+                showFooter: true,//表示尾部统计
+                columns: [{
+		            checkbox: true
+		        },
+				{
+					field : 'ppId', 
+					title : '主键编号',
+					visible: false
+				},
+				{
+					field : 'ppProjectName', 
+					title : '*资金名称',
+					sortable: true
+				},
+				{
+					field : 'ppNo', 
+					title : '*资金文号(省)',
+					sortable: true
+				},
+				{
+					field : 'ppNoX', 
+					title : '*资金文号(县)',
+					sortable: true
+				},
+				{
+					field : 'ppNature', 
+					title : '*资金性质',
+					sortable: true
+				},
+				{
+					field : 'ppPriceType', 
+					title : '*资金类别',
+					sortable: true
+				},
+				{
+					field : 'ppPriceClass', 
+					title : '*资金级别',
+					sortable: true
+				},
+				{
+					field : 'ppPrice', 
+					title : '*资金金额(万元)',
+					sortable: true,
+                    footerFormatter:function (value) {
+                        var count=0;
+                        for (var i=0; i<value.length;i++) {
+                            count += parseFloat(JSON.parse(JSON.stringify(value[i])).ppPrice);
+                        }
+                        return "总金额：" + count;
+                    }
+				},
+				{
+					field : 'ppUsePrice', 
+					title : '已挂接(万元)-实际到了实施单位的金额',
+					sortable: true
+				},
+				{
+					field : 'ppSurplusPrice', 
+					title : '剩余(万元)',
+					sortable: true
+				},
+				{
+					field : 'ppProvinceId', 
+					title : '行政区划(省)',
+					sortable: true
+				},
+				{
+					field : 'ppCityId', 
+					title : '行政区划(市)',
+					sortable: true
+				},
+				{
+					field : 'ppZoneId', 
+					title : '行政区划(区)',
+					sortable: true
+				},
+				{
+					field : 'ppPurpose', 
+					title : '资金用途',
+					sortable: true
+				},
+				{
+					field : 'ppPriceState', 
+					title : '资金状态(1、待拨付2、拨付中3、拨付完)',
+					sortable: true
+				},
+				{
+					field : 'ppInPlaceTime', 
+					title : '到位时间',
+					sortable: true
+				},
+				{
+					field : 'ppUseTime', 
+					title : '限定使用时间',
+					sortable: true
+				},
+				{
+					field : 'ppIsUse', 
+					title : '是否可用(1、否0、是)',
+					sortable: true
+				},
+				{
+					field : 'ppIsDel', 
+					title : '是否删除(1 可用   -100已删除)',
+					sortable: true
+				},
+				{
+					field : 'ppPerson', 
+					title : '录入人',
+					sortable: true
+				},
+				{
+					field : 'ppCreateTime', 
+					title : '创建时间',
+					sortable: true
+				},
+		        {
+		            title: '操作',
+		            align: 'center',
+		            formatter: function(value, row, index) {
+		            	var actions = [];
+		            	actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="$.operate.edit(\'' + row.ppId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" onclick="$.operate.remove(\'' + row.ppId + '\')"><i class="fa fa-remove"></i>删除</a>');
+						return actions.join('');
+		            }
+		        }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>
